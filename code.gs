@@ -15,11 +15,11 @@ function autoFillIPSTemplateGoogleDoc(e) {
   //create an array and parse values from CSV format, store them in an array
   goalsArr = goals.split(',')
   if (goalsArr.length >= 1)
-    goal1 = goalsArr[0]
+    goal1 = stringToNumber(goalsArr[0])
   if (goalsArr.length >= 2)
-    goal2 = goalsArr[1]
+    goal2 = stringToNumber(goalsArr[1])
   if (goalsArr.length >= 3)
-    goal3 = goalsArr[2]
+    goal3 = stringToNumber(goalsArr[2])
 
 //grab the template file ID to modify
   const file = DriveApp.getFileById(templateID);
@@ -38,9 +38,9 @@ function autoFillIPSTemplateGoogleDoc(e) {
   body.replaceText('%InvestorName%', investorName);
   body.replaceText('%Date%', timeStamp);
 
-  body.replaceText('%Goal1%', goal1.trim())
-  body.replaceText('%Goal2%', goal2.trim())
-  body.replaceText('%Goal3%', goal3.trim())
+  body.replaceText('%Goal1%', goal1)
+  body.replaceText('%Goal2%', goal2)
+  body.replaceText('%Goal3%', goal3)
 
   doc.saveAndClose();
 
@@ -48,4 +48,15 @@ function autoFillIPSTemplateGoogleDoc(e) {
   var attach = DriveApp.getFileById(copy.getId());
   var pdfattach = attach.getAs(MimeType.PDF);
   MailApp.sendEmail(emailID, subject, emailBody, { attachments: [pdfattach] });
+}
+
+//Function that receives a string and convert it into a number
+function stringToNumber(str) {
+    let result;
+    if (str.includes(".") || str.includes(",")) {
+        res = parseFloat(str);
+    } else {
+        res = parseInt(str);
+    }
+    return isNaN(res)?str+" is not a number":res;
 }
