@@ -53,10 +53,12 @@ function autoFillIPSTemplateGoogleDoc(e) {
 //Function that receives a string and convert it into a number
 function stringToNumber(str) {
     let result;
+    //Check if the number in the string has decimal
     if (str.includes(".") || str.includes(",")) {
         res = parseFloat(str);
     } else {
         res = parseInt(str);
     }
+    //return the number if is a number or the string with a message in case is not
     return isNaN(res)?str+" is not a number":res;
 }
